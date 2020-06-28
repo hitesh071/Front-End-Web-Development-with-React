@@ -1,12 +1,9 @@
-import React,{ Component} from 'react';
-import {Card,CardImg,CardTitle,CardBody, CardText} from 'reactstrap';
+import React from 'react';
+import {Card,CardImg,CardTitle,CardBody, CardText,BreadcrumbItem,Breadcrumb} from 'reactstrap';
+import {Link} from 'react-router-dom';
 
 
-class DishDetail extends Component{
-    constructor(props){
-        super(props);
-    }
-    renderDish(dish){
+    function RenderDish({dish}){
         if(dish!=null){
             return(
                 <div className="col-12 col-md-5 m-1">
@@ -25,7 +22,7 @@ class DishDetail extends Component{
         }
 
     }
-    renderComments(comments){
+    function RenderComments({comments}){
         if(comments==null){
             return(<div></div>)
         }
@@ -42,20 +39,34 @@ class DishDetail extends Component{
             </div>
         )
     }
-    render(){
-        const dish = this.props.dish;
-        if(dish==null){
-            return (<div></div>)
+    const DishDetail= (props) =>{
+        if (props.dish != null )
+            return (
+                <div className="container">
+                    <div className="row">
+                        <Breadcrumb>
+                            <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
+                            <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                        </Breadcrumb>
+                        <div className="col-12">
+                            <h3>{props.dish.name}</h3>
+                            <hr />
+                        </div>                
+                    </div>
+                    <div className="row">
+                        
+                        <RenderDish dish={props.dish} />
+                        
+                        <RenderComments comments={props.comments} />
+                        
+                    </div>
+                </div>
+            );
+        else
+        {
+            return(<div></div>);
         }
-        const dishSelected=this.renderDish(dish);
-        const commentSelected=this.renderComments(dish.comments);
-        return(
-            <div className='row'>
-                {dishSelected}
-                {commentSelected}
-            </div>    
-        )
 
     }
-}
+
 export default DishDetail;
